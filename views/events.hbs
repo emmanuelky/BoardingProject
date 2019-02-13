@@ -24,7 +24,9 @@
   {{#each allEvents}}
   <div class="card ml-4 mt-4 mb-4" style="width: 18rem;">
     <div class="card-body">
-      <h5 class="card-title">{{_game.name}}</h5>
+      <div class="d-flex justify-content-between flex-wrap">
+        <h5 class="card-title">{{_game.name}}</h5> <a href="/edit-event/{{_id}}"><i class="fas fa-edit"></i></a>
+      </div>
       <p class="card-text">{{address}}</p>
       <p class="card-text"><strong>Description:</strong> {{description}}</p>
       <p class="card-text"> <strong>Date:</strong> {{formatDateEvents date}}</p>
@@ -33,7 +35,7 @@
       <p class="card-text"><strong>Slots:</strong> {{slot}}</p>
       <p class="card-text"> <strong>Host:</strong> {{_user.username}}</p>
       <div class="card-body">
-        <a href="/event/{{_id}}" class="card-link mr-5">Details</a>
+        <a href="/detail-event/{{_id}}" class="card-link mr-5">Details</a>
         {{#if this.isJoined}}
         <a href="/cancel-event-join/{{this._id}}" class="btn btn-danger">Cancel</a>
         {{else}}

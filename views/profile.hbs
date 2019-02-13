@@ -2,16 +2,17 @@
 
   <h1 class="pt-5 ml-3">Profile</h1>
   <hr>
-    <div class="mx-auto text-center">
-  <div>
-    <img class="w-25"src="/images/profile-avatar.png">
-  </div>
-  <h1 class="mt-3 font-weight-bold">{{user.username}}</h1> <br>
-  <p class="mt-2">Registered since:</p><p> <strong>{{formatDateProfile user.created_at}}</strong></p>
+  <div class="mx-auto text-center">
+    <div>
+      <img class="w-25" src="/images/profile-avatar.png">
+    </div>
+    <h1 class="mt-3 font-weight-bold">{{user.username}}</h1> <br>
+    <p class="mt-2">Registered since:</p>
+    <p> <strong>{{formatDateProfile user.created_at}}</strong></p>
 
-  <div class="flex-column d-flex justify-content-center mt-4">
-    <label for="customRange1">Max Distance:</label>
-    <p id="rangeValue" class="font-weight-bold"></p>
+    <div class="flex-column d-flex justify-content-center mt-4">
+      <label for="customRange1">Max Distance:</label>
+      <p id="rangeValue" class="font-weight-bold"></p>
     </div>
     <input type="range" class="custom-range" id="customRange1" value="10" min="1" max="100">
   </div>
@@ -19,6 +20,14 @@
     <a href="/update-range-user" id="link-range-update" class="btn btn-success mt-4">Set Range</a>
   </div>
 </div>
+<br>
+<br>
+<form action="/update-position-user" method="POST" id="form-container">
+<div id='geocoder-signup' class='geocoder'></div>
+<button>Set position</button>
+</form>
+
+
 
 <div class="w-50 mx-auto">
   <h2 class="pt-5 ml-3">Joined Events</h2>
@@ -53,10 +62,12 @@
     {{#each event}}
     <div class="card ml-4 mt-4 mb-4" style="width: 18rem;">
       <div class="card-body">
-        <h5 class="card-title">{{_game.name}}</h5>
+        <div class="d-flex justify-content-between flex-wrap">
+          <h5 class="card-title">{{_game.name}}</h5> <a href="/edit-event/{{_id}}"><i class="fas fa-edit"></i></a>
+        </div>
         <p class="card-text">{{address}}</p>
         <p class="card-text"><strong>Description:</strong> {{description}}</p>
-        <p class="card-text"> <strong>Date:</strong> {{date}}</p>
+        <p class="card-text"> <strong>Date:</strong> {{formatDateEvents date}}</p>
         <p class="card-text"><strong>Slots:</strong> {{slot}}</p>
         <div class="card-body"></div>
         <a href="/event/{{_id}}" class="card-link mr-5">Details</a>
@@ -67,6 +78,16 @@
   </div>
 </div>
 
+
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v3.1.0/mapbox-gl-geocoder.min.js'></script>
+<link rel='stylesheet'
+  href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v3.1.0/mapbox-gl-geocoder.css' type='text/css' />
+<style>
+  .mapboxgl-ctrl-geocoder {
+    min-width: 100%;
+  }
+</style>
+<div id='map'></div>
 <script>
   var output = document.getElementById('rangeValue')
   var slider = document.getElementById('customRange1')
@@ -76,4 +97,18 @@
     output.innerHTML = this.value;
     document.getElementById('link-range-update').setAttribute("href", `/update-maxDistance-user/${this.value}`)
   }
+//change position
+  mapboxgl.accessToken = 'pk.eyJ1IjoiZnJkMjZ4IiwiYSI6ImNqcnQ4ZGFzMjF4dDA0M3BzOWg4NGNlem4ifQ.SgF_HKYViz0-nlirZ9Ksag';
+  var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v9',
+    center: [-79.4512, 43.6568],
+    zoom: 13
+  });
+  var geocoder = new MapboxGeocoder({
+    accessToken: mapboxgl.accessToken
+  });
+  document.getElementById('geocoder-signup').appendChild(geocoder.onAdd(map));
+  document.getElementById('geocoder-signup').firstChild.childNodes[1].setAttribute("name", 'position')
+  document.getElementById('geocoder-signup').firstChild.childNodes[1].value = "{{user.position}}"
 </script>
