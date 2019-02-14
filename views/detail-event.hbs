@@ -1,37 +1,35 @@
-
 <div class="w-50 mx-auto">
 
-  <h2 class="pt-5 ml-3">Users participating</h2>
+  <h2 class="pt-5 ml-3 text-secondary">Users participating</h2>
   <hr>
-  <div class="card">
-  <div class="card-body">
-    {{#each eventDetail.partecipantsEvent}}
-    <h6 class="card-subtitle mb-1">{{user}}</h6>
-    
-{{/each}}
+  {{#each eventDetail.partecipantsEvent}}
+  <div class="row mx-auto mt-3">
+    <h4 class="col-sm mb-1 text-center">{{user}}</h4>
+  </div>
+  {{/each}}
+
+</div>
+{{eventDetail.event.isOwner}}
+{{#if eventDetail.event.isSoldOut}}
+SOLD OUT
+{{/if}}
+{{eventDetail.event.isJoined}}
+
+<div class="w-50 mx-auto">
+  <h2 class="pt-5 ml-3 text-secondary">Details</h2>
+  <hr>
+  <div class="ml-3">
+    <p class="font-italic">{{eventDetail.event.address}}</p>
+    <p><strong>Description: </strong>{{eventDetail.event.description}}</p>
+    <p><strong>Slots: </strong>{{eventDetail.event.slot}}</p>
+    <p><strong>Date: </strong>{{formatDateEvents eventDetail.event.date}}</p>
   </div>
 </div>
-</div>
-<h1>Details</h1>
-{{#each eventDetail.partecipantsEvent}}
-{{user}}
-{{/each}}
 <div class="w-50 mx-auto">
 
-  <h2 class="pt-5 ml-3">Game rules</h2>
+  <h2 class="pt-5 ml-3 text-secondary">Game rules</h2>
   <hr>
+  <div class="ml-3">
+    <h6>{{ eventDetail.event._game.description}}</h6>
+  </div>
 </div>
-{{#each eventDetail.event}}
-{{description}}
-{{/each}}
-<div class="w-50 mx-auto">
-
-  <h2 class="pt-5 ml-3">Details</h2>
-  <hr>
-</div>
-{{#each eventDetail}}
-{{address}}
-{{description}}
-{{slot}}
-{{formatDateEvents date}}
-{{/each}}

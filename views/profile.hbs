@@ -12,20 +12,24 @@
 
     <div class="flex-column d-flex justify-content-center mt-4">
       <label for="customRange1">Max Distance:</label>
-      <p id="rangeValue" class="font-weight-bold"></p>
+      <p id="rangeValue" class="font-weight-bold">{{user.maxDistance}} Km</p>
     </div>
-    <input type="range" class="custom-range" id="customRange1" value="10" min="1" max="100">
+    <input type="range" class="custom-range" id="customRange1" value="{{user.maxDistance}}" min="1" max="100">
   </div>
   <div class="mx-auto text-center">
     <a href="/update-range-user" id="link-range-update" class="btn btn-success mt-4">Set Range</a>
   </div>
+  <div class="mt-5">
+  <form action="/update-position-user" method="POST" id="form-container">
+    <div id='geocoder-signup' class='geocoder mt-3'></div>
+    <div class="mx-auto text-center">
+    <button class="btn btn-success mt-3">Set position</button>
+  </form>
+  </div>
 </div>
-<br>
-<br>
-<form action="/update-position-user" method="POST" id="form-container">
-<div id='geocoder-signup' class='geocoder'></div>
-<button>Set position</button>
-</form>
+</div>
+
+
 
 
 
@@ -38,8 +42,7 @@
     <div class="card ml-4 mt-4 mb-4" style="width: 18rem;">
       <div class="card-body">
         <h5 class="card-title">{{_event._game.name}}</h5>
-        <p class="card-text">{{_event.address}}</p>
-        <p class="card-text"><strong>Description:</strong> {{_event.description}}</p>
+        <p class="card-text font-italic">{{_event.address}}</p>
         <p class="card-text"> <strong>Date:</strong> {{formatDateEvents _event.date}}</p>
         <p class="card-text"><strong>Slots:</strong> {{_event.slot}}</p>
         <div class="card-body"></div>
@@ -65,8 +68,7 @@
         <div class="d-flex justify-content-between flex-wrap">
           <h5 class="card-title">{{_game.name}}</h5> <a href="/edit-event/{{_id}}"><i class="fas fa-edit"></i></a>
         </div>
-        <p class="card-text">{{address}}</p>
-        <p class="card-text"><strong>Description:</strong> {{description}}</p>
+        <p class="card-text font-italic">{{address}}</p>
         <p class="card-text"> <strong>Date:</strong> {{formatDateEvents date}}</p>
         <p class="card-text"><strong>Slots:</strong> {{slot}}</p>
         <div class="card-body"></div>
@@ -94,10 +96,10 @@
   output.innerHTML = slider.value; // Display the default slider value
   // Update the current slider value (each time you drag the slider handle)
   slider.oninput = function () {
-    output.innerHTML = this.value;
+    output.innerHTML = `${this.value} Km`;
     document.getElementById('link-range-update').setAttribute("href", `/update-maxDistance-user/${this.value}`)
   }
-//change position
+  //change position
   mapboxgl.accessToken = 'pk.eyJ1IjoiZnJkMjZ4IiwiYSI6ImNqcnQ4ZGFzMjF4dDA0M3BzOWg4NGNlem4ifQ.SgF_HKYViz0-nlirZ9Ksag';
   var map = new mapboxgl.Map({
     container: 'map',
