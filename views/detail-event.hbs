@@ -10,7 +10,12 @@
 
   {{#if eventDetail.event.isSoldOut}}
   <div class="p-3 mb-2 bg-danger text-white text-center mt-4">BOOKED OUT</div>
+  {{else}}
+  <div class="text-center mt-5">
+  <a href="/join-event/{{eventDetail.event._id}}" class="btn btn-success ml-4">Join</a>
+  </div>
   {{/if}}
+
 </div>
 
 
@@ -22,7 +27,7 @@
     <p><strong>Description: </strong>{{eventDetail.event.description}}</p>
     <p><strong>Slots: </strong>{{eventDetail.event.slot}}</p>
     <p><strong>Date: </strong>{{formatDateEvents eventDetail.event.date}}</p>
-    <p><strong>Host:</strong> {{eventDetail._user.username}}</p>
+    <p><strong>Host:</strong> {{eventDetail.event._user.username}}</p>
   </div>
 </div>
 <div class="w-50 mx-auto">
