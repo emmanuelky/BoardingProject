@@ -13,25 +13,76 @@ router.get("/", (req, res, next) => {
 
 router.get("/events", (req, res, next) => {
   // By default, we don't sort
+
+  if(req.query.game){
+    const maxDistance = req.user.maxDistance * 1000;
+    var lng = req.user.loc.coordinates[0];
+    var lat = req.user.loc.coordinates[1];
+  
+    Game.find({ name: req.query.game }).then(game => {
+      Promise.all([
+        Join.find({ _user: req.user._id }).lean(),
+        Event.find({
+          _game: game[0]._id,
+          loc: {
+            $nearSphere: {
+              $geometry: {
+                type: "Point",
+                coordinates: [lng, lat]
+              },
+              $maxDistance: maxDistance
+            }
+          }
+        })
+          .populate("_game")
+          .populate("_user")
+          .lean()
+      ])
+        .then(([usersEvents, allEvents]) => {
+  
+          res.render("events", {
+            allEvents: allEvents.map(event => ({
+              ...event,
+              isJoined: usersEvents.some(
+                join =>
+                  join._user.equals(req.user._id) && join._event.equals(event._id)
+              ),
+              isOwner: event._user._id.equals(req.user._id) ? true : false,
+              isSoldOut: event.slot === 0 ? true : false
+            })),
+            errorMessage: req.flash("errorMessage")[0]
+          });
+        })
+        .catch(err => console.log(err));
+    });
+  }else{
+
+  
+  let betweenDates = {}
+  
+  if(req.query.start && req.query.end){
+  betweenDates = {$and:[{date:{$lte:req.query.end}},{date:{$gte:req.query.start}}]}
+  }
   let sortArg = {}
   if (req.query.sort === 'date') {
     sortArg = { date: 1 }
   }
+  
 
   const maxDistance = req.user.maxDistance * 1000;
   Promise.all([
     Join.find({ _user: req.user._id }).lean(),
-    Event.find({
-      loc: {
-        $nearSphere: {
-          $geometry: {
-            type: "Point",
-            coordinates: req.user.loc.coordinates
-          },
-          $maxDistance: maxDistance
+    Event.
+    find({$and:[{loc: {
+      $nearSphere: {
+        $geometry: {
+          type: "Point",
+          coordinates: req.user.loc.coordinates
+        },
+        $maxDistance: maxDistance,
         }
-      }
-    })
+    }}, betweenDates]
+      })
       .sort(sortArg)
       .populate("_game")
       .populate("_user")
@@ -51,7 +102,7 @@ router.get("/events", (req, res, next) => {
         errorMessage: req.flash("errorMessage")[0]
       });
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log(err));}
 })
 
 //GET add-event page
@@ -94,7 +145,7 @@ router.post("/add-event", (req, res, next) => {
           res.redirect("/events");
         })
         .catch(err => console.log(err));
-      /*console.log(`LONG & LAT of ${address} `,data.features[0].center);*/
+      
     }
   );
 });
@@ -256,48 +307,9 @@ router.get("/profile/:userId", (req, res, next) => {
 });
 
 //GET find by game-name from search using gameId
-router.get("/events-byname", (req, res, next) => {
-  const maxDistance = req.user.maxDistance * 1000;
-  var lng = req.user.loc.coordinates[0];
-  var lat = req.user.loc.coordinates[1];
-
-  Game.find({ name: req.query.game }).then(game => {
-    Promise.all([
-      Join.find({ _user: req.user._id }).lean(),
-      Event.find({
-        _game: game[0]._id,
-        loc: {
-          $nearSphere: {
-            $geometry: {
-              type: "Point",
-              coordinates: [lng, lat]
-            },
-            $maxDistance: maxDistance
-          }
-        }
-      })
-        .populate("_game")
-        .populate("_user")
-        .lean()
-    ])
-      .then(([usersEvents, allEvents]) => {
-
-        res.render("events", {
-          allEvents: allEvents.map(event => ({
-            ...event,
-            isJoined: usersEvents.some(
-              join =>
-                join._user.equals(req.user._id) && join._event.equals(event._id)
-            ),
-            isOwner: event._user._id.equals(req.user._id) ? true : false,
-            isSoldOut: event.slot === 0 ? true : false
-          })),
-          errorMessage: req.flash("errorMessage")[0]
-        });
-      })
-      .catch(err => console.log(err));
-  });
-});
+// router.get("/events-byname", (req, res, next) => {
+  
+// });
 
 //GET update POSITION USER
 router.get("/update-maxDistance-user/:range", (req, res) => {

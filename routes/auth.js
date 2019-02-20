@@ -1,5 +1,5 @@
 const express = require("express");
-const passport = require('passport');
+const passport = require("passport");
 const router = express.Router();
 const User = require("../models/User");
 const mapbox = require("../public/javascripts/geocode");
@@ -8,17 +8,19 @@ const mapbox = require("../public/javascripts/geocode");
 const bcrypt = require("bcryptjs");
 const bcryptSalt = 10;
 
-
 router.get("/login", (req, res, next) => {
-  res.render("auth/login", { "message": req.flash("error") });
+  res.render("auth/login", { message: req.flash("error") });
 });
 
-router.post("/login", passport.authenticate("local", {
-  successRedirect: "/",
-  failureRedirect: "/auth/login",
-  failureFlash: true,
-  passReqToCallback: true
-}));
+router.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/auth/login",
+    failureFlash: true,
+    passReqToCallback: true
+  })
+);
 
 router.get("/signup", (req, res, next) => {
   res.render("auth/signup");
@@ -43,37 +45,29 @@ router.post("/signup", (req, res, next) => {
     const salt = bcrypt.genSaltSync(bcryptSalt);
     const hashPass = bcrypt.hashSync(password, salt);
 
-    mapbox(
-      process.env.MAPBOX_KEY,
-      `${position}`,
-      function(err, data) {
-
-        const newUser = new User({
-          username,
-          password: hashPass,
-          position,
-          loc: {
-            type: "Point",
-            coordinates: data.features[0].center
-          }
- });
- newUser.save()
- .then((user) => {
-  req.logIn(user, () => {
-    res.redirect("/"); 
-    })
-   
- })
- .catch(err => {
-   res.render("auth/signup", { message: "Something went wrong" });
- })
-        
-    
-
-  
+    mapbox(process.env.MAPBOX_KEY, `${position}`, function(err, data) {
+      const newUser = new User({
+        username,
+        password: hashPass,
+        position,
+        loc: {
+          type: "Point",
+          coordinates: data.features[0].center
+        }
+      });
+      newUser
+        .save()
+        .then(user => {
+          req.logIn(user, () => {
+            res.redirect("/");
+          });
+        })
+        .catch(err => {
+          res.render("auth/signup", { message: "Something went wrong" });
+        });
+    });
   });
 });
-})
 
 router.get("/logout", (req, res) => {
   req.logout();
