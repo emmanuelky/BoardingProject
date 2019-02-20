@@ -44,7 +44,7 @@ router.post("/signup", (req, res, next) => {
     const hashPass = bcrypt.hashSync(password, salt);
 
     mapbox(
-      "pk.eyJ1IjoiZnJkMjZ4IiwiYSI6ImNqcnQ4ZGFzMjF4dDA0M3BzOWg4NGNlem4ifQ.SgF_HKYViz0-nlirZ9Ksag",
+      process.env.MAPBOX_KEY,
       `${position}`,
       function(err, data) {
 
@@ -58,8 +58,11 @@ router.post("/signup", (req, res, next) => {
           }
  });
  newUser.save()
- .then(() => {
-   res.redirect("/");
+ .then((user) => {
+  req.logIn(user, () => {
+    res.redirect("/"); 
+    })
+   
  })
  .catch(err => {
    res.render("auth/signup", { message: "Something went wrong" });

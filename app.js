@@ -13,9 +13,9 @@ const session    = require("express-session");
 const MongoStore = require('connect-mongo')(session);
 const flash      = require("connect-flash");
     
-
+//Test
 mongoose
-  .connect('mongodb://localhost/project', {useNewUrlParser: true})
+  .connect(process.env.MONGODB_URI, {useNewUrlParser: true})
   .then(x => {
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   })
@@ -93,20 +93,21 @@ hbs.registerHelper('formatDateProfile', (value, options) => {
   }
   
 });
+//test
 
 hbs.registerHelper('formatDateEvents', (value, options) => {
   try {
     return value.toString().substr(0,21) 
   }
   catch (err) {
-    return "formatDate had a problem..."
+    return ""
   }
   
 });
   
 
 // default value for title local
-app.locals.title = 'Express - Generated with IronGenerator';
+app.locals.title = 'Boarding';
 
 
 

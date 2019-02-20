@@ -10,56 +10,57 @@
     integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script>
   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css' rel='stylesheet' />
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <link rel="stylesheet" href="/stylesheets/style.css" />
 
 </head>
 
 <body>
-  <nav class="navbar navbar-light bg-light">
-    <ul class="nav justify-content-end mr-auto">
+  <nav class="navbar navbar-dark bg-primary">
+    <div class="container">
+      <ul class="nav justify-content-end mr-auto">
 
-    {{#if user}}
+      {{#if user}}
 
-    <a class="navbar-brand pr-3" href="/">
-      <i class="fas fa-home"></i>
-    </a>
+      <a class="navbar-brand pr-2" href="/">
+        <i class="fas fa-home mr-2"></i>Home
+      </a>
 
-    <a class="navbar-brand pr-3" href="/events">
-    <i class="fas fa-calendar-check"></i>
-    </a>  
-    </ul>
+      <a class="navbar-brand pr-2" href="/events">
+      <i class="fas fa-calendar-check mr-2"></i>Events
+      </a>  
+      </ul>
 
-    <ul class="nav justify-content-end mr-auto"></ul>
-    
-    <a class="navbar-brand pl-3" href="/profile/{{user._id}}">
-      <i class="fas fa-user-circle"></i> {{user.username}}
-    </a>
-
-    <a class="navbar-brand pl-3" href="/auth/logout">
-    <i class="fas fa-sign-out-alt"></i>
-    </a>
-  
-    
-    {{else}}
-
-    <ul class="nav justify-content-end mr-auto">
-
-    <a class="navbar-brand" href="/auth/login">
-        <i class="fas fa-sign-in-alt"></i>
-        </a>
-    
-    <a class="navbar-brand" href="/auth/signup">
-    <i class="fas fa-user-plus"></i>
-    </a>
-    </ul>
-</nav>
-{{/if}}
-  </nav>
+      <ul class="nav justify-content-end mr-auto"></ul>
       
+      <a class="navbar-brand pl-2" href="/profile/{{user._id}}">
+        <i class="fas fa-user-circle"></i> {{user.username}}
+      </a>
 
+      <a class="navbar-brand pl-2" href="/auth/logout">
+      <i class="fas fa-sign-out-alt mr-2"></i>
+      </a>
+    
+      
+      {{else}}
+
+      <ul class="nav justify-content-end mr-auto">
+
+      <a class="navbar-brand mr-4" href="/auth/login">
+          <i class="fas fa-sign-in-alt mr-2"></i>Login
+          </a>
+      
+      <a class="navbar-brand" href="/auth/signup">
+      <i class="fas fa-user-plus mr-2"></i>Signup
+      </a>
+      </ul>
+    </div>
+{{/if}}
+</nav>
+ 
+      
+  <div class="container">
   {{{body}}}
+  </div>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>

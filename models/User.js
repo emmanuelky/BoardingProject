@@ -12,7 +12,7 @@ const userSchema = new Schema({
     type: {type:String, enum:['Point'], default: "Point"},
     coordinates: [Number]
   },
-  maxDistance:Number
+  maxDistance: {type:Number, default: 10},
 }, {
   timestamps: {
     createdAt: 'created_at',

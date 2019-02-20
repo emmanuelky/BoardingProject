@@ -23,12 +23,14 @@ const eventSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User"
   },
-  description: String
-
-  // timestamps: {
-  //   createdAt: "created_at",
-  //   updatedAt: "updated_at"
-  // }
+  description: String}
+  , {
+    timestamps: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
+    
+  }
+    
 });
 
 eventSchema.index({"loc":"2dsphere"})

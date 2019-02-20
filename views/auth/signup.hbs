@@ -30,37 +30,6 @@
   </div>
 </div>
 
-
-
-
-
-
-
-<h2>Signup</h2>
-<form action="/auth/signup" method="POST" id="form-container">
-  <label for="username">Username</label>
-  <input id="username" type="text" name="username" placeholder="JonSnow">
-  <br><br>
-
-  <label for="position">Your Position</label>
-  <div id='geocoder-signup' class='geocoder'></div>
-  {{!-- <input id="position" type="text" name="position" placeholder="Berlin"> --}}
-  <br><br>
-
-  <label for="password">Password</label>
-  <input id="password" type="password" name="password" placeholder="Your password">
-  <br>
-  {{#if message }}
-  <div class="error-message">{{ message }}</div>
-  {{/if}}
-  <br><br>
-  <button>Create account</button>
-  <p class="account-message">
-    Do you already have an account?
-    <a href="/auth/login">Login</a>
-  </p>
-</form>
-
 <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v3.1.0/mapbox-gl-geocoder.min.js'></script>
 <link rel='stylesheet'
   href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v3.1.0/mapbox-gl-geocoder.css' type='text/css' />

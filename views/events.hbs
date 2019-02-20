@@ -1,24 +1,33 @@
-<form action="/events-byname" method="GET">
+<form action="/events" method="GET">
   <div class="form-group d-flex flex-row justify-content-center align-self-center mt-5">
-    <button id="get-pos" class="btn btn-primary mb-2 mr-3 ml-4"><i class="fas fa-map-marker-alt"></i></button>
+    <a href="/add-event" class="btn btn-primary mb-2 mr-2"> Add <i class="ml-2 far fa-plus-square"></i></a>
+
     <input type="text" class="form-control w-50 text-center" name="game" placeholder="Enter Game Filter">
     <button type="submit" class="btn btn-primary mb-2 ml-3">Enter</button>
   </div>
+  </form>
   <div class="text-center">
     <div class="dropdown show">
-      <a href="/add-event" class="btn btn-primary"><i class="far fa-plus-square"></i></a>
+      <form actio="/events" method="GET">
+      <div class="container d-flex flex-row d-flex justify-content-center align-self-center w-100 mb-3 flex-wrap">
+        <h6 class="my-auto"> Start: </h6><input name="start" class="form-control w-25 mr-3 ml-3" type="date" aria-label="Search"
+          value="Start">
+        <h6 class="my-auto">End: </h6><input name="end" class="form-control w-25 mr-3 ml-3" type="date" aria-label="Search">
+        <button class="btn btn-outline-primary my-2 my-sm-0 " type="submit">Search</button>
+      </div>
+      </form>
+      <p class="font-italic mt-5">{{user.position}} <button id="get-pos" class="btn btn-primary mr-3 ml-4"><i class="fas fa-map-marker-alt"></i></button></p>
       <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
         Sort your search
       </a>
 
       <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a id='sort-by-distance' href="/sort-by-distance" class="dropdown-item">By distance</a>
-        <a class="dropdown-item" href="/sort-by-date">By date</a>
+        <a id='sort-by-distance' href="/events" class="dropdown-item">By distance</a>
+        <a class="dropdown-item" href="/events?sort=date">By date</a>
       </div>
     </div>
   </div>
-</form>
 
 <div class="d-flex justify-content-center flex-wrap">
   {{#each allEvents}}
@@ -28,35 +37,30 @@
         <h5 class="card-title">{{_game.name}}</h5>
       </div>
       <p class="card-text font-italic">{{address}}</p>
-      <p class="card-text"> <strong>Date:</strong> {{formatDateEvents date}}</p>
-      {{!-- <p class="card-text"> <strong>Time:</strong> {{time}}</p> --}}
+      <p class="card-text">
+        <strong>Date:</strong> {{formatDateEvents date}}</p>
+      {{!--
+      <p class="card-text">
+        <strong>Time:</strong> {{time}}</p> --}}
 
-      <p class="card-text"><strong>Slots:</strong> {{slot}}</p>
-      <p class="card-text"> <strong>Host:</strong> {{_user.username}}</p>
+      <p class="card-text">
+        <strong>Slots:</strong> {{slot}}</p>
+      <p class="card-text">
+        <strong>Host:</strong> {{_user.username}}</p>
       <div class="card-body">
         <a href="/detail-event/{{_id}}" class="card-link mr-5">Details</a>
         {{#if this.isSoldOut}}
-        <i class="fas fa-ban"></i>
-        {{else}}
-        {{#if this.isJoined}}
+        <button class="btn btn-secondary" disabled>
+          <i class="fas fa-ban"></i>
+        </button>
+
+        {{else}} {{#if this.isJoined}}
         <a href="/cancel-event-join/{{this._id}}" class="btn btn-danger">Cancel</a>
         {{else}}
         <a href="/join-event/{{this._id}}" class="btn btn-success ml-4">Join</a>
-        {{/if}}
-        {{/if}}
+        {{/if}} {{/if}}
       </div>
     </div>
   </div>
   {{/each}}
 </div>
-
-
-<script>
-  document.getElementById('get-pos').onclick = function () {
-    navigator.geolocation.getCurrentPosition(function (pos) {
-      console.log(pos)
-      let position = `/sort-by-distance?lng=${pos.coords.longitude}&lat=${pos.coords.latitude}`
-      document.getElementById('sort-by-distance').setAttribute("href", position)
-    })
-  }
-</script>

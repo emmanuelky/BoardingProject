@@ -9,7 +9,10 @@
   <input class="form-control" name="date" type="datetime-local" value="{{formatDate event.date}}" id="date-time">
   
   <label  class="col-2 col-form-label">Game:</label>
-  <select class="form-control" name="_game">
+  <select class="form-control" name="_game" >
+    <option selected="selected" value='{{event._game._id}}'>
+{{event._game.name}}
+</option>
     {{#each games}}
     <option value='{{this._id}}'>
       {{this.name}}

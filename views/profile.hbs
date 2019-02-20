@@ -17,13 +17,13 @@
     <input type="range" class="custom-range" id="customRange1" value="{{user.maxDistance}}" min="1" max="100">
   </div>
   <div class="mx-auto text-center">
-    <a href="/update-range-user" id="link-range-update" class="btn btn-success mt-4">Set Range</a>
+    <a href="/update-range-user" id="link-range-update" class="btn btn-success mt-3">Set Range</a>
   </div>
   <div class="mt-5">
   <form action="/update-position-user" method="POST" id="form-container">
     <div id='geocoder-signup' class='geocoder mt-3'></div>
     <div class="mx-auto text-center">
-    <button class="btn btn-success mt-3">Set position</button>
+    <button class="btn btn-success mt-4">Set position</button>
   </form>
   </div>
 </div>
@@ -46,7 +46,7 @@
         <p class="card-text"> <strong>Date:</strong> {{formatDateEvents _event.date}}</p>
         <p class="card-text"><strong>Slots:</strong> {{_event.slot}}</p>
         <div class="card-body"></div>
-        <a href="/event/{{_id}}" class="card-link mr-5">Details</a>
+        <a href="/detail-event/{{_event._id}}" class="card-link mr-5">Details</a>
         <a href="/cancel-event-join/{{_event._id}}" class="btn btn-danger">Cancel</a>
       </div>
     </div>
@@ -72,8 +72,8 @@
         <p class="card-text"> <strong>Date:</strong> {{formatDateEvents date}}</p>
         <p class="card-text"><strong>Slots:</strong> {{slot}}</p>
         <div class="card-body"></div>
-        <a href="/event/{{_id}}" class="card-link mr-5">Details</a>
-        <a href="/cancel-event-join/{{_id}}" class="btn btn-danger">Cancel</a>
+        <a href="/detail-event/{{_id}}" class="card-link mr-5">Details</a>
+        <a href="/cancel-event/{{_id}}" class="btn btn-danger">Cancel Event</a>
       </div>
     </div>
     {{/each}}
